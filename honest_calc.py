@@ -6,6 +6,10 @@ class Calculator:
         "msg_3": "Yeah... division by zero. Smart move...",
         "msg_4": "Do you want to store the result? (y / n):\n",
         "msg_5": "Do you want to continue calculations? (y / n):\n",
+        "msg_6": " ... lazy",
+        "msg_7": " ... very lazy",
+        "msg_8": " ... very, very lazy",
+        "msg_9": "You are",
     }
     operators = {"+", "-", "*", "/", "//", "%", }
 
@@ -75,6 +79,25 @@ class Calculator:
             val = float(val)
         return val
 
+    def is_one_digit(self):
+        msg = ""
+        if ((-10 < self.number_one < 10) and self.number_one.is_integer()
+                and (-10 < self.number_two < 10) and self.number_two.is_integer()):
+            msg += self.messages["msg_6"]
+
+        return msg
+
+    def is_val_one_and_multiply(self, msg: str):
+        if (self.number_one == 1 or self.number_two == 1) and self.operator == "*":
+            msg += self.messages["msg_7"]
+
+        return msg
+
+    def check_three(self, msg: str):
+        if (self.number_one == 0 or self.number_two == 0) and self.operator in ("*", "+", "-"):
+            msg += self.messages["msg_8"]
+        return msg
+
 
     def insert_data(self):
         temp_data = input(self.messages["msg_0"])
@@ -95,6 +118,10 @@ class Calculator:
             self.number_one = float(temp_data[0])
             self.number_two = float(temp_data[2])
             self.data_correct = True
+
+            message = self.check_three(self.is_val_one_and_multiply(self.is_one_digit()))
+            if message:
+                print(self.messages["msg_9"] + message)
 
 
 def main():
