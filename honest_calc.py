@@ -1,4 +1,7 @@
 class Calculator:
+    """Create the Calculator instance to perform the calculations, and it will respond with 'honest' replies."""
+
+    # class field messages contains all possible messages you may get during calculations
     messages = {
         "msg_0": "Enter an equation\n",
         "msg_1": "Do you even know what numbers are? Stay focused!",
@@ -10,10 +13,19 @@ class Calculator:
         "msg_7": " ... very lazy",
         "msg_8": " ... very, very lazy",
         "msg_9": "You are",
+        "msg_10": "Are you sure? It is only one digit! (y / n)\n",
+        "msg_11": "Don't be silly! It's just one number! Add to the memory? (y / n)\n",
+        "msg_12": "Last chance! Do you really want to embarrass yourself? (y / n)\n",
     }
+
+    # possible operators
     operators = {"+", "-", "*", "/", "//", "%", }
 
     def __init__(self, memory=0):
+        """Calculator instance initiation
+
+        :param memory: initial state of calculator memory
+        """
         self.memory = memory
         self.number_one = None
         self.number_two = None
@@ -22,6 +34,10 @@ class Calculator:
         self.result = None
 
     def __repr__(self):
+        """Calculator instance representation
+        
+        :return: dict with class fields
+        """
         return str(self.__dict__)
 
     def check_operator(self, operator):
@@ -45,13 +61,37 @@ class Calculator:
     def divide_numbers(a: int | float, b: int | float) -> int | float:
         return a / b
 
+    def storage_confirmation(self, result, msg_index=10):
+        """Ask the user whether he/she would like to continue. If the answer is 'y' ask again (no more than 3 times).
+        A user can change their mind or confirm his/her choice three times before the result is saved in memory.
+
+        :param result:
+        :param msg_index:
+        :return:
+        """
+        answer = input(self.messages["msg_4"]) if msg_index == 10 else "y"
+        if answer == "n":
+            return self.memory
+        elif answer == "y" and result.is_integer() and result < 10:
+            answer = input(self.messages[f"msg_{msg_index}"])
+        else:
+            return result
+
+        if answer == "n":
+            return self.memory
+        elif answer == "y" and msg_index < 12:
+            return self.storage_confirmation(result, msg_index + 1)
+        else:
+            return result
+
+
     def should_result_be_stored(self, result):
-        self.memory = result if input(self.messages["msg_4"]) == "y" else self.memory
+        # self.memory = result if input(self.messages["msg_4"]) == "y" else self.memory
+        self.memory = self.storage_confirmation(result)
         self.result = None
         self.number_one = None
         self.number_two = None
         self.operator = None
-
 
     def calculation(self):
         if self.operator == "+":
