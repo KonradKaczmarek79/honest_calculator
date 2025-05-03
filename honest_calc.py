@@ -22,7 +22,7 @@ class Calculator:
     operators = {"+", "-", "*", "/", "//", "%", }
 
     def __init__(self, memory=0):
-        """Calculator instance initiation
+        """The initializer for the class.
 
         :param memory: initial state of calculator memory
         """
@@ -35,39 +35,67 @@ class Calculator:
 
     def __repr__(self):
         """Calculator instance representation
-        
+
         :return: dict with class fields
         """
         return str(self.__dict__)
 
     def check_operator(self, operator):
+        """
+        Check if the operator is a valid value according to the definition in self.operators ones.
+        :param operator: string value to check
+        :return: operator if it is valid, raise ValueError otherwise
+        """
         if operator not in self.operators:
             raise ValueError
         return operator
 
     @staticmethod
     def add_numbers(a: int | float, b: int | float) -> int | float:
+        """simple addition operation
+
+        :param a: first number
+        :param b: second number
+        :return: a + b result
+        """
         return a + b
 
     @staticmethod
     def substract_numbers(a: int | float, b: int | float) -> int | float:
+        """simple subtraction operation
+
+        :param a: first number
+        :param b: second number
+        :return: a - b result
+        """
         return a - b
 
     @staticmethod
     def multiply_numbers(a: int | float, b: int | float) -> int | float:
+        """Simple multiplication operation
+
+        :param a: first number
+        :param b: second number
+        :return: a * b result
+        """
         return a * b
 
     @staticmethod
     def divide_numbers(a: int | float, b: int | float) -> int | float:
+        """Simple division operation
+
+        :param a: first number
+        :param b: second number
+        :return: a / b result"""
         return a / b
 
     def storage_confirmation(self, result, msg_index=10):
         """Ask the user whether he/she would like to continue. If the answer is 'y' ask again (no more than 3 times).
         A user can change their mind or confirm his/her choice three times before the result is saved in memory.
 
-        :param result:
-        :param msg_index:
-        :return:
+        :param result: numeric value to check
+        :param msg_index: index used to select the appropriate message for the user
+        :return: value to set in memory if it's valid current memory state otherwise
         """
         answer = input(self.messages["msg_4"]) if msg_index == 10 else "y"
         if answer == "n":
@@ -86,7 +114,12 @@ class Calculator:
 
 
     def should_result_be_stored(self, result):
-        # self.memory = result if input(self.messages["msg_4"]) == "y" else self.memory
+        """After receiving the result, if the user wants to save the result in memory,
+        the data is cleared and the memory field is filled with the obtained result.
+
+        :param result: numeric value represents result of previous mathematical calculation
+        :return: None (only changes instance fields)
+        """
         self.memory = self.storage_confirmation(result)
         self.result = None
         self.number_one = None
@@ -94,6 +127,10 @@ class Calculator:
         self.operator = None
 
     def calculation(self):
+        """Make the appropriate calculation and ask if the result should be stored for further use.
+        
+        :return: None
+        """
         if self.operator == "+":
             self.result = self.add_numbers(self.number_one, self.number_two)
         elif self.operator == "-":
